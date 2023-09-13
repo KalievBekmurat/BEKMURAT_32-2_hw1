@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Program Lang</title>
+</head>
+<body>
+<h1>Список книг и их цены</h1>
+{% for i in lang_key %}
+<h2>{{i.title}}</h2>
+<p>{{i.description}}</p>
+<p>{{i.author}}</p>
+<p>{{i.cost}}</p>
+<img src="{{i.image.url}}" alt="image_programm lang" width="400" height="400">
+
+<b>{{i.created_at}}</b>
+{% endfor %}
+</body>
+</html>
