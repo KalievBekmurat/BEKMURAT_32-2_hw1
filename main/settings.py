@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'library',
+    'watch_shop',
+
 ]
 
 MIDDLEWARE = [
@@ -110,8 +112,8 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = 'media/'
 
-STATICFILES_DIRS = [BASE_DIR / 'static',
-
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
 ]
 
 # Default primary key field type
