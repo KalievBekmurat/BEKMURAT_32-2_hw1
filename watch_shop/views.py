@@ -1,47 +1,78 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from . import models, forms
+from django.views import generic
+# def watch_shop_view(request):
+#     watches = models.Watches.objects.all()
+#     return render(request, 'watches/watch.html', {'watch_key': watches})
+class WatchesView(generic.ListView):
+    template_name = 'watches/watch.html'
+    queryset = models.Watches.objects.all()
 
-def watch_shop_view(request):
-    watches = models.Watches.objects.all()
-    return render(request, 'watches/watch.html', {'watch_key': watches})
+    def get_queryset(self):
+        return models.Watches.objects.all()
 
-def watch_shop_detail_view(request, id):
-    watch_id = get_object_or_404(models.Watches, id=id)
-    return render(request, 'watches/watch_detail.html', {'watch_id_key': watch_id})
-
-
-def add_watch_shop_view(request):
-    method = request.method
-    if method == 'POST':
-        form = forms.WatchShopForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('Добавление <<Часов>> прошло успешно!')
-    else:
-        form = forms.WatchShopForm()
-    return render(request, 'watches/crud/create_watch.html', {'form': form})
+# def watch_shop_detail_view(request, id):
+#     watch_id = get_object_or_404(models.Watches, id=id)
+#     return render(request, 'watches/watch_detail.html', {'watch_id_key': watch_id})
+class WatchesDetailView(generic.DetailView):
+    template_name = 'watches/watch_detail.html'
 
 
-def delete_watch_shop_view(request, id):
-    watch_id_delete = get_object_or_404(models.Watches, id=id)
-    watch_id_delete.delete()
-    return HttpResponse('Удаление <<Часов>> прошло успешно!')
+    def get_object(self, **kwargs):
+        show_id = self.kwargs.get('id')
+        return get_object_or_404(models.Watches, id=show_id)
+
+class AddWatchesView(generic.CreateView):
+    template_name = 'watches/crud/create_watch.html'
+    form_class = forms.WatchShopForm
+    queryset = models.Watches.objects.all()
+    success_url = '/'
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return super(AddWatchesView, self).form_valid(form=form)
 
 
-def update_watch_shop_view(request, id):
-    watch_id = get_object_or_404(models.Watches, id=id)
-    if request.method == 'POST':
-        form = forms.WatchShopForm(instance=watch_id, data=request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('Объект успешно обновлен')
-    else:
-        form = forms.WatchShopForm(instance=watch_id)
+# def delete_watch_shop_view(request, id):
+#     watch_id_delete = get_object_or_404(models.Watches, id=id)
+#     watch_id_delete.delete()
+#     return HttpResponse('Удаление <<Часов>> прошло успешно!')
 
-        context = {
-            'form': form,
-            'object': watch_id
-        }
-    return render(request, 'watches/crud/update_watch.html', context)
+class DeleteWatchesView(generic.DeleteView):
+    template_name = 'watches/crud/confirm_delete.html'
+    success_url = '/'
 
+
+    def get_object(self, **kwargs):
+        show_id = self.kwargs.get('id')
+        return get_object_or_404(models.Watches, id=show_id)
+
+class UpdateWatchesView(generic.UpdateView):
+    template_name = 'Watches/crud/update_watch.html'
+    form_class = forms.WatchShopForm
+    success_url = '/'
+
+
+    def get_object(self, queryset=None):
+        show_id = self.kwargs.get('id')
+        return get_object_or_404(models.Watches, id=show_id)
+
+
+    def form_valid(self, form):
+        return super(UpdateWatchesView,self).form_valid(form=form)
+
+class Search(generic.ListView):
+    template_name = 'watches/watch.html'
+    context_object_name = 'watch'
+    paginate_by = 5
+
+
+    def get_queryset(self):
+        return models.Watches.objects.filter(title__icontains=self.request.GET.get('q'))
+
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['q'] = self.request.GET.get('q')
+        return context

@@ -5,15 +5,15 @@
     <title>Detail</title>
 </head>
 <body>
-<h1>{{watch_id_key.title}}</h1>
-<h2>{{watch_id_key.made_in}}</h2>
-<h3>{{watch_id_key.watches_author}}</h3>
-<h4>{{watch_id_key.operating_principle}}</h4>
-<P><b>{{watch_id_key.description}}</b></P>
-<img src="{{watch_id_key.image.url}}" alt="image">
-<iframe src = "{{watch_id_key.video_of_watches}}" frameborder="0"></iframe>
-<button><a href="/watch_detail/{{watch_id_key.id}}/delete/">Удалить</a></button>
-<button><a href="/watch_detail/{{watch_id_key.id}}/update/">Изменить</a></button>
+<h1>{{object.title}}</h1>
+<h2>{{object.made_in}}</h2>
+<h3>{{object.watches_author}}</h3>
+<h4>{{object.operating_principle}}</h4>
+<P><b>{{object.description}}</b></P>
+<img src="{{object.image.url}}" alt="image">
+<iframe src = "{{object.video_of_watches}}" frameborder="0"></iframe>
+<button><a href="/watch_detail/{{object.id}}/delete/">Удалить</a></button>
+<button><a href="/watch_detail/{{object.id}}/update/">Изменить</a></button>
 </body>
 </html>
 
