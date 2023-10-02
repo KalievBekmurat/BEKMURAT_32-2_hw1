@@ -14,6 +14,21 @@
 <iframe src = "{{object.video_of_watches}}" frameborder="0"></iframe>
 <button><a href="/watch_detail/{{object.id}}/delete/">Удалить</a></button>
 <button><a href="/watch_detail/{{object.id}}/update/">Изменить</a></button>
+
+<table border="2">
+    <tr>
+        <td>Оценка</td> <td>Комментарий</td> <td>Дата создания</td>
+    </tr>
+    {% for i in object.comment_object.all %}
+    <tr>
+       <td>{{i.review_stars}}</td> <td>{{i.review_text}}</td> <td>{{i.reviews_created_at}}</td>
+
+    </tr>
+    {% endfor %}
+</table>
+
+
+
 </body>
 </html>
 

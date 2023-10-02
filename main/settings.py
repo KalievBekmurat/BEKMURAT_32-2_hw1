@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'library',
     'watch_shop',
+    'parser_app',
 
 ]
 
